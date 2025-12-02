@@ -70,38 +70,33 @@
         .scene {
             display: flex; align-items: center; justify-content: center;
             min-height: 80vh; margin-bottom: 50px;
-            /* Initial hidden state */
             opacity: 0; transform: translateY(100px) scale(0.9);
             transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
             filter: blur(10px);
         }
 
-        /* Target visible state (Applied by JavaScript) */
         .scene.in-view {
             opacity: 1; transform: translateY(0) scale(1); filter: blur(0);
         }
 
-        /* The Card Design (Polaroid/Notebook look) */
         .polaroid-wrapper {
             background: white; padding: 20px 20px 50px 20px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.15);
             width: 80%; max-width: 500px; position: relative;
             border-radius: 2px;
-            /* CSS 3D Tilt on Hover */
             transition: transform 0.3s ease-out;
         }
         .polaroid-wrapper:hover {
-            transform: scale(1.05) rotateZ(1deg); /* Slight rotation on hover */
+            transform: scale(1.05) rotateZ(1deg);
             box-shadow: 0 25px 60px rgba(0,0,0,0.2);
         }
 
         .polaroid-wrapper img {
             width: 100%; height: auto; display: block;
             border-bottom: 1px solid #eee;
-            filter: contrast(110%) brightness(105%); 
+            filter: contrast(110%) brightness(105%);
         }
 
-        /* Tape Effect */
         .tape {
             position: absolute; top: -15px; left: 50%;
             transform: translateX(-50%); width: 120px; height: 35px;
@@ -112,7 +107,6 @@
             backdrop-filter: blur(2px); z-index: 10;
         }
 
-        /* Text Styling & Position */
         .text-content {
             position: absolute; width: 300px; top: 50%;
             transform: translateY(-50%); z-index: -1;
@@ -122,7 +116,6 @@
         .scene:nth-child(odd) .text-content { right: -150px; text-align: left; }
         .scene:nth-child(even) .text-content { left: -150px; text-align: right; }
 
-        /* Text slides out when image is in view */
         .scene.in-view:nth-child(odd) .text-content { right: -220px; }
         .scene.in-view:nth-child(even) .text-content { left: -220px; }
 
@@ -139,11 +132,10 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.05); border-left: 3px solid var(--gold);
         }
 
-        /* Mobile Adjustments */
         @media (max-width: 768px) {
             .scene { flex-direction: column; margin-bottom: 100px; }
             .polaroid-wrapper { width: 90%; }
-            .polaroid-wrapper:hover { transform: scale(1.05); } /* simplified hover for touchscreens */
+            .polaroid-wrapper:hover { transform: scale(1.05); }
             .text-content {
                 position: relative; width: 90%; margin-top: 30px;
                 left: auto !important; right: auto !important;
@@ -155,12 +147,10 @@
             h1 { font-size: 3.5rem; }
         }
 
-        /* Animations */
         @keyframes fadeZoomIn { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
         @keyframes slideUpFade { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
         @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} 60% {transform: translateY(-5px);} }
 
-        /* Simplified Floating Hearts (CSS only for better stability) */
         @keyframes floatUp {
             0% { opacity: 0.6; transform: translateY(0) rotate(0deg); }
             100% { opacity: 0; transform: translateY(-120vh) rotate(360deg); }
@@ -168,11 +158,10 @@
         .floating-heart {
             position: fixed; color: var(--accent); font-size: 20px;
             pointer-events: none; z-index: 0; opacity: 0.6;
-            animation: floatUp linear infinite; /* Runs forever */
-            animation-duration: 8s; /* Default duration */
+            animation: floatUp linear infinite;
+            animation-duration: 8s;
             bottom: -50px;
         }
-        /* Individual delays/speeds to make it look random */
         .heart-1 { left: 10%; animation-duration: 7s; font-size: 15px; }
         .heart-2 { left: 30%; animation-duration: 9s; animation-delay: 1.5s; }
         .heart-3 { left: 50%; animation-duration: 6s; animation-delay: 0.5s; font-size: 25px; }
@@ -192,7 +181,6 @@
     <div class="floating-heart heart-4">✨</div>
     <div class="floating-heart heart-5">❤</div>
 
-
     <header>
         <h1>Nam Kadhal Oviyam</h1>
         <div class="date-badge">12 . 02 . 2025</div>
@@ -201,9 +189,11 @@
 
     <div class="story-container">
 
+        <!-- 1 -->
         <div class="scene">
             <div class="polaroid-wrapper">
                 <div class="tape"></div>
+                <!-- full saree photo -->
                 <img src="4.jpeg" alt="Video Call">
             </div>
             <div class="text-content">
@@ -216,10 +206,12 @@
             </div>
         </div>
 
+        <!-- 2 -->
         <div class="scene">
             <div class="polaroid-wrapper">
                 <div class="tape"></div>
-                <img src="2.jpeg" alt="Deep Thoughts">
+                <!-- solo selfie (white dress) -->
+                <img src="6.jpeg" alt="Deep Thoughts">
             </div>
             <div class="text-content">
                 <span class="english-caption">Your Mind</span>
@@ -231,10 +223,12 @@
             </div>
         </div>
 
+        <!-- 3 -->
         <div class="scene">
             <div class="polaroid-wrapper">
                 <div class="tape"></div>
-                <img src="1.jpeg" alt="Selfie">
+                <!-- close couple selfie (blue wall) -->
+                <img src="2.jpeg" alt="Selfie">
             </div>
             <div class="text-content">
                 <span class="english-caption">New Pic?</span>
@@ -246,10 +240,12 @@
             </div>
         </div>
 
+        <!-- 4 -->
         <div class="scene">
             <div class="polaroid-wrapper">
                 <div class="tape"></div>
-                <img src="6.jpeg" alt="Smile">
+                <!-- kiss on cheek -->
+                <img src="4.jpeg" alt="Smile">
             </div>
             <div class="text-content">
                 <span class="english-caption">Pure Joy</span>
@@ -261,9 +257,11 @@
             </div>
         </div>
 
+        <!-- 5 -->
         <div class="scene">
             <div class="polaroid-wrapper">
                 <div class="tape"></div>
+                <!-- framed couple selfie -->
                 <img src="5.jpeg" alt="Ice Cream">
             </div>
             <div class="text-content">
@@ -276,10 +274,12 @@
             </div>
         </div>
 
+        <!-- 6 -->
         <div class="scene">
             <div class="polaroid-wrapper">
                 <div class="tape"></div>
-                <img src="3.jpeg" alt="Together">
+                <!-- feet with anklets -->
+                <img src="1.jpeg" alt="Together">
             </div>
             <div class="text-content">
                 <span class="english-caption">Forever Us</span>
@@ -294,21 +294,16 @@
     </div>
 
     <script>
-        // --- 1. Cinematic Scroll Observer ---
-        // Applies the 'in-view' class when a scene enters the viewport.
         document.addEventListener('DOMContentLoaded', () => {
             const observerOptions = {
-                threshold: 0.3, // Trigger when 30% visible
-                rootMargin: "0px" 
+                threshold: 0.3,
+                rootMargin: "0px"
             };
 
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('in-view');
-                    } else {
-                        // Optional: remove the class when scrolling away to re-trigger the animation on return
-                        // entry.target.classList.remove('in-view'); 
                     }
                 });
             }, observerOptions);
@@ -319,5 +314,4 @@
         });
     </script>
 </body>
-
 </html>
