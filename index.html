@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Cinematic Story ❤</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Montserrat:wght@300;500&family=Playfair+Display:ital,wght@1,500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #f4f1ea;
+            --text-main: #2c3e50;
+            --accent: #c0392b;
+            --gold: #d4af37;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            color: var(--text-main);
+        }
+
+        /* --- CINEMATIC OVERLAYS --- */
+        .film-grain {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 100; opacity: 0.05;
+            background-image: url("https://www.transparenttextures.com/patterns/stardust.png");
+        }
+
+        .vignette {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 99;
+            background: radial-gradient(circle, transparent 50%, rgba(0,0,0,0.3) 100%);
+        }
+
+        /* --- HERO SECTION --- */
+        header {
+            height: 100vh; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center;
+            position: relative;
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive; font-size: 5rem;
+            color: var(--accent); margin: 0; opacity: 0;
+            animation: fadeZoomIn 2s ease forwards;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .date-badge {
+            margin-top: 20px; font-family: 'Playfair Display', serif;
+            font-size: 1.5rem; border-top: 1px solid var(--text-main);
+            border-bottom: 1px solid var(--text-main); padding: 10px 30px;
+            opacity: 0; animation: slideUpFade 1.5s 1s ease forwards;
+        }
+
+        .scroll-indicator {
+            position: absolute; bottom: 30px; font-size: 2rem;
+            animation: bounce 2s infinite; opacity: 0.6;
+        }
+
+        /* --- CONTENT STREAM & SCROLL ANIMATIONS --- */
+        .story-container {
+            max-width: 900px; margin: 0 auto; padding-bottom: 150px;
+        }
+
+        .scene {
+            display: flex; align-items: center; justify-content: center;
+            min-height: 80vh; margin-bottom: 50px;
+            /* Initial hidden state */
+            opacity: 0; transform: translateY(100px) scale(0.9);
+            transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
+            filter: blur(10px);
+        }
+
+        /* Target visible state (Applied by JavaScript) */
+        .scene.in-view {
+            opacity: 1; transform: translateY(0) scale(1); filter: blur(0);
+        }
+
+        /* The Card Design (Polaroid/Notebook look) */
+        .polaroid-wrapper {
+            background: white; padding: 20px 20px 50px 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            width: 80%; max-width: 500px; position: relative;
+            border-radius: 2px;
+            /* CSS 3D Tilt on Hover */
+            transition: transform 0.3s ease-out;
+        }
+        .polaroid-wrapper:hover {
+            transform: scale(1.05) rotateZ(1deg); /* Slight rotation on hover */
+            box-shadow: 0 25px 60px rgba(0,0,0,0.2);
+        }
+
+        .polaroid-wrapper img {
+            width: 100%; height: auto; display: block;
+            border-bottom: 1px solid #eee;
+            filter: contrast(110%) brightness(105%); 
+        }
+
+        /* Tape Effect */
+        .tape {
+            position: absolute; top: -15px; left: 50%;
+            transform: translateX(-50%); width: 120px; height: 35px;
+            background-color: rgba(255,255,255,0.6);
+            border-left: 1px dashed rgba(0,0,0,0.1);
+            border-right: 1px dashed rgba(0,0,0,0.1);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            backdrop-filter: blur(2px); z-index: 10;
+        }
+
+        /* Text Styling & Position */
+        .text-content {
+            position: absolute; width: 300px; top: 50%;
+            transform: translateY(-50%); z-index: -1;
+            transition: 1.5s ease;
+        }
+
+        .scene:nth-child(odd) .text-content { right: -150px; text-align: left; }
+        .scene:nth-child(even) .text-content { left: -150px; text-align: right; }
+
+        /* Text slides out when image is in view */
+        .scene.in-view:nth-child(odd) .text-content { right: -220px; }
+        .scene.in-view:nth-child(even) .text-content { left: -220px; }
+
+        .english-caption {
+            font-family: 'Playfair Display', serif; font-size: 1.8rem;
+            font-weight: bold; color: var(--accent); margin-bottom: 10px;
+            display: block;
+        }
+
+        .tamil-verse {
+            font-family: 'Montserrat', sans-serif; font-size: 1.1rem;
+            line-height: 1.6; color: #555; background: rgba(255,255,255,0.9);
+            padding: 15px; border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); border-left: 3px solid var(--gold);
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            .scene { flex-direction: column; margin-bottom: 100px; }
+            .polaroid-wrapper { width: 90%; }
+            .polaroid-wrapper:hover { transform: scale(1.05); } /* simplified hover for touchscreens */
+            .text-content {
+                position: relative; width: 90%; margin-top: 30px;
+                left: auto !important; right: auto !important;
+                text-align: center !important; transform: none !important;
+            }
+            .scene.in-view:nth-child(odd) .text-content,
+            .scene.in-view:nth-child(even) .text-content { transform: none !important; }
+
+            h1 { font-size: 3.5rem; }
+        }
+
+        /* Animations */
+        @keyframes fadeZoomIn { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
+        @keyframes slideUpFade { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} 60% {transform: translateY(-5px);} }
+
+        /* Simplified Floating Hearts (CSS only for better stability) */
+        @keyframes floatUp {
+            0% { opacity: 0.6; transform: translateY(0) rotate(0deg); }
+            100% { opacity: 0; transform: translateY(-120vh) rotate(360deg); }
+        }
+        .floating-heart {
+            position: fixed; color: var(--accent); font-size: 20px;
+            pointer-events: none; z-index: 0; opacity: 0.6;
+            animation: floatUp linear infinite; /* Runs forever */
+            animation-duration: 8s; /* Default duration */
+            bottom: -50px;
+        }
+        /* Individual delays/speeds to make it look random */
+        .heart-1 { left: 10%; animation-duration: 7s; font-size: 15px; }
+        .heart-2 { left: 30%; animation-duration: 9s; animation-delay: 1.5s; }
+        .heart-3 { left: 50%; animation-duration: 6s; animation-delay: 0.5s; font-size: 25px; }
+        .heart-4 { left: 70%; animation-duration: 8s; animation-delay: 2s; }
+        .heart-5 { left: 90%; animation-duration: 10s; animation-delay: 3s; font-size: 18px; }
+
+    </style>
+</head>
+<body>
+
+    <div class="film-grain"></div>
+    <div class="vignette"></div>
+
+    <div class="floating-heart heart-1">❤</div>
+    <div class="floating-heart heart-2">✨</div>
+    <div class="floating-heart heart-3">❤</div>
+    <div class="floating-heart heart-4">✨</div>
+    <div class="floating-heart heart-5">❤</div>
+
+
+    <header>
+        <h1>Nam Kadhal Oviyam</h1>
+        <div class="date-badge">12 . 02 . 2025</div>
+        <div class="scroll-indicator">↓</div>
+    </header>
+
+    <div class="story-container">
+
+        <div class="scene">
+            <div class="polaroid-wrapper">
+                <div class="tape"></div>
+                <img src="4.jpg" alt="Video Call">
+            </div>
+            <div class="text-content">
+                <span class="english-caption">The Distance</span>
+                <div class="tamil-verse">
+                    "தூரம் என்பது வெறும் எண்கள் தான்,<br>
+                    என் இதயம் முழுதும் நீ மட்டும் தான்!"<br>
+                    <small>(Distance is just a number...)</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="scene">
+            <div class="polaroid-wrapper">
+                <div class="tape"></div>
+                <img src="2.jpg" alt="Deep Thoughts">
+            </div>
+            <div class="text-content">
+                <span class="english-caption">Your Mind</span>
+                <div class="tamil-verse">
+                    "உன் மௌனம் கூட எனக்கு ஒரு கவிதை...<br>
+                    உன் யோசனைகள் என் உலகின் எல்லை!"<br>
+                    <small>(Even your silence is poetry...)</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="scene">
+            <div class="polaroid-wrapper">
+                <div class="tape"></div>
+                <img src="1.jpg" alt="Selfie">
+            </div>
+            <div class="text-content">
+                <span class="english-caption">New Pic?</span>
+                <div class="tamil-verse">
+                    "என் அலைபேசியின் திரை ஒளிரும் போதெல்லாம்,<br>
+                    என் முகத்தில் உன் புன்னகை!"<br>
+                    <small>(When my screen lights up...)</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="scene">
+            <div class="polaroid-wrapper">
+                <div class="tape"></div>
+                <img src="6.jpg" alt="Smile">
+            </div>
+            <div class="text-content">
+                <span class="english-caption">Pure Joy</span>
+                <div class="tamil-verse">
+                    "ஆயிரம் பூக்கள் பூத்தாலும்,<br>
+                    உன் சிரிப்புக்கு ஈடு ஏது?"<br>
+                    <small>(Nothing equals your smile...)</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="scene">
+            <div class="polaroid-wrapper">
+                <div class="tape"></div>
+                <img src="5.jpg" alt="Ice Cream">
+            </div>
+            <div class="text-content">
+                <span class="english-caption">Sweet Moments</span>
+                <div class="tamil-verse">
+                    "உன்னோடு நான் இருக்கும் நொடிகள்,<br>
+                    என் வாழ்க்கையின் அழகான பக்கங்கள்."<br>
+                    <small>(Beautiful pages of my life...)</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="scene">
+            <div class="polaroid-wrapper">
+                <div class="tape"></div>
+                <img src="3.jpg" alt="Together">
+            </div>
+            <div class="text-content">
+                <span class="english-caption">Forever Us</span>
+                <div class="tamil-verse">
+                    "காலங்கள் மாறலாம், காட்சிகள் மாறலாம்.<br>
+                    ஆனால் உன் மீதான என் காதல் என்றும் மாறாது!"<br>
+                    <small>(My love will never change.)</small>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- 1. Cinematic Scroll Observer ---
+        // Applies the 'in-view' class when a scene enters the viewport.
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                threshold: 0.3, // Trigger when 30% visible
+                rootMargin: "0px" 
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('in-view');
+                    } else {
+                        // Optional: remove the class when scrolling away to re-trigger the animation on return
+                        // entry.target.classList.remove('in-view'); 
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.scene').forEach(scene => {
+                observer.observe(scene);
+            });
+        });
+    </script>
+</body>
+</html>
